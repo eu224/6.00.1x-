@@ -1,0 +1,160 @@
+# Problem 1
+class NewsStory(object):
+    
+    def __init__(self, guid, title, subject, summary, link):
+        self.guid = guid
+        self.title = title
+        self.subject = subject
+        self.summary = summary
+        self.link = link
+    
+    def getGuid(self):
+        return self.guid
+    def getTitle(self):
+        return self.title
+    def getSubject(self):
+        return self.subject
+    def getSummary(self):
+        return self.summary
+    def getLink(self):
+        return self.link
+        
+# Problem 5
+# TODO: WordTrigger
+class WordTrigger(Trigger):
+	def __init__(self, word):
+		self.word = word
+	
+	def isWordIn(self, text):
+		for character in string.punctuation:
+			text = text.replace(character, ' ')
+		text = text.lower()
+		text = text.split()
+		return self.word.lower() in text
+
+# TODO: TitleTrigger
+class TitleTrigger(WordTrigger):
+    def evaluate(self, story):        
+        return self.isWordIn(story.getTitle())
+# TODO: SubjectTrigger    
+class SubjectTrigger(WordTrigger):
+    def evaluate(self, story):       
+        return self.isWordIn(story.getSubject())
+# TODO: SummaryTrigger
+class SummaryTrigger(WordTrigger):
+    def evaluate(self, story):
+        return self.isWordIn(story.getSummary())
+        
+# Problem 8
+# TODO: WordTrigger
+class WordTrigger(Trigger):
+	def __init__(self, word):
+		self.word = word
+	
+	def isWordIn(self, text):
+		for character in string.punctuation:
+			text = text.replace(character, ' ')
+		text = text.lower()
+		text = text.split()
+		return self.word.lower() in text
+
+# TODO: TitleTrigger
+class TitleTrigger(WordTrigger):
+    def evaluate(self, story):        
+        return self.isWordIn(story.getTitle())
+class NotTrigger(Trigger):
+    def __init__(self, trigger):
+        self.trigger = trigger
+        
+    def evaluate(self, story):
+        return not self.trigger.evaluate(story)
+
+# TODO: AndTrigger        
+class AndTrigger(Trigger):
+    def __init__(self, trigger1, trigger2):
+        self.trigger1 = trigger1
+        self.trigger2 = trigger2
+    
+    def evaluate(self, story):
+        return self.trigger1.evaluate(story) and self.trigger2.evaluate(story)
+
+# TODO: OrTrigger  
+class OrTrigger(Trigger):
+    def __init__(self, trigger1, trigger2):
+        self.trigger1 = trigger1
+        self.trigger2 = trigger2
+    
+    def evaluate(self, story):
+        return self.trigger1.evaluate(story) or self.trigger2.evaluate(story)
+        
+# Problem 9
+# TODO: PhraseTrigger
+class WordTrigger(Trigger):
+	def __init__(self, word):
+		self.word = word
+	
+	def isWordIn(self, text):
+		for character in string.punctuation:
+			text = text.replace(character, ' ')
+		text = text.lower()
+		text = text.split()
+		return self.word.lower() in text
+
+# TODO: TitleTrigger
+class TitleTrigger(WordTrigger):
+    def evaluate(self, story):        
+        return self.isWordIn(story.getTitle())
+# TODO: SubjectTrigger    
+class SubjectTrigger(WordTrigger):
+    def evaluate(self, story):       
+        return self.isWordIn(story.getSubject())
+# TODO: SummaryTrigger
+class SummaryTrigger(WordTrigger):
+    def evaluate(self, story):
+        return self.isWordIn(story.getSummary())
+class PhraseTrigger(Trigger):
+    def __init__(self, phrase):
+        self.phrase = phrase
+    
+    def evaluate(self, story):
+        return self.phrase in story.getTitle() or self.phrase in story.getSubject() or self.phrase in story.getSummary()
+        
+# Problem 11
+def makeTrigger(triggerMap, triggerType, params, name):
+    """
+    Takes in a map of names to trigger instance, the type of trigger to make,
+    and the list of parameters to the constructor, and adds a new trigger
+    to the trigger map dictionary.
+
+    triggerMap: dictionary with names as keys (strings) and triggers as values
+    triggerType: string indicating the type of trigger to make (ex: "TITLE")
+    params: list of strings with the inputs to the trigger constructor (ex: ["world"])
+    name: a string representing the name of the new trigger (ex: "t1")
+
+    Modifies triggerMap, adding a new key-value pair for this trigger.
+
+    Returns a new instance of a trigger (ex: TitleTrigger, AndTrigger).
+    """
+    # TODO: Problem 11
+    if triggerType == "TITLE":
+        triggerMap[name] = TitleTrigger(params[0])
+ 
+    elif triggerType == "SUBJECT":
+        triggerMap[name] = SubjectTrigger(params[0])
+ 
+    elif triggerType == "SUMMARY":
+        triggerMap[name] = SummaryTrigger(params[0])
+ 
+    elif triggerType == "NOT":
+        triggerMap[name] = NotTrigger(triggerMap[params[0]])
+ 
+    elif triggerType == "AND":
+        triggerMap[name] = AndTrigger(triggerMap[params[0]], triggerMap[params[1]])
+ 
+    elif triggerType == "OR":
+        triggerMap[name] = OrTrigger(triggerMap[params[0]], triggerMap[params[1]])
+ 
+    elif triggerType == "PHRASE":
+        triggerMap[name] = PhraseTrigger(' '.join(params))
+ 
+    return triggerMap[name]
