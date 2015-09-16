@@ -1,0 +1,57 @@
+
+# Problem 4
+def myLog(x, b):
+    power = 1
+    result = 1
+    
+    
+    while result < x:
+    
+        
+        result *= b
+        power += 1
+        
+        
+        if result > x:
+            return power - 2
+        
+        
+        if result == x:
+            return power - 1
+        
+        
+        if result < x:
+            pass
+            
+# Problem 5
+def lessThan4(aList):
+	nList = []
+	for i in aList:
+		if len(i) < 4:
+			nList.append(i)
+	return nList
+	
+# Problem 6
+def sumDigits(N):
+    if N == 0:
+      return 0
+    else:
+      return (N % 10) + sumDigits(N // 10)
+      
+# Problem 7
+def keysWithValue(aDict, target):
+    result = []
+    if target not in aDict.values():
+        return result
+    else:
+        for i, x in aDict.iteritems():
+            if x == target:
+                result.append(i)
+        return sorted(result)
+        
+# Problem 8
+def satisfiesF(L):
+	nList = [i for i in L if f(i) == True]
+	L[:] = nList     
+	return len(L)
+run_satisfiesF(L, satisfiesF)
